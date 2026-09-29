@@ -16,8 +16,12 @@ export async function fetchFic(url: string): Promise<Fic> {
   try {
     // Goes through the Vite dev proxy (see vite.config.ts) to avoid CORS.
     const proxyBase = import.meta.env.PROD ? '/api/ao3' : '/ao3';
-    res = await fetch(`${proxyBase}/works/${id}?view_full_work=true&view_adult=true`
-);
+
+    const endpoint = import.meta.env.PROD
+      ? `${proxyBase}?path=works/${id}&view_full_work=true&view_adult=true`
+      : `${proxyBase}/works/${id}?view_full_work=true&view_adult=true`;
+
+res = await fetch(endpoint);
   } catch {
     throw new Error('Network request failed.');
   }

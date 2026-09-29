@@ -5,17 +5,14 @@ export default async function handler(
   res: VercelResponse
 ) {
   try {
-    const path = Array.isArray(req.query.path)
-      ? req.query.path.join('/')
-      : req.query.path;
+    const path = req.query.path;
 
-    if (!path || !path.startsWith('works/')) {
+    if (typeof path !== 'string' || !path.startsWith('works/')) {
       return res.status(400).json({
         error: 'Only AO3 work URLs are supported.',
       });
     }
 
-    // Preserve query parameters such as ?view_adult=true
     const query = new URLSearchParams();
 
     for (const [key, value] of Object.entries(req.query)) {
@@ -29,6 +26,7 @@ export default async function handler(
     }
 
     const queryString = query.toString();
+
     const ao3Url =
       `https://archiveofourown.org/${path}` +
       (queryString ? `?${queryString}` : '');
