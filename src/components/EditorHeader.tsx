@@ -1,3 +1,4 @@
+import { FONTS, type FontId } from '../services/fonts';
 import type { Mode } from '../services/syntaxHighlighter';
 
 type Props = {
@@ -5,13 +6,17 @@ type Props = {
   mode: Mode;
   modes: Mode[];
   onMode: (m: Mode) => void;
+  fontId: FontId;
+  onFontId: (f: FontId) => void;
   showNumbers: boolean;
   onToggleNumbers: () => void;
   onFont: (delta: number) => void;
   onClose: () => void;
 };
 
-export default function EditorHeader({ filename, mode, modes, onMode, showNumbers, onToggleNumbers, onFont, onClose }: Props) {
+export default function EditorHeader({
+  filename, mode, modes, onMode, fontId, onFontId, showNumbers, onToggleNumbers, onFont, onClose,
+}: Props) {
   return (
     <div className="titlebar">
       <div className="dots" aria-hidden>
@@ -21,6 +26,12 @@ export default function EditorHeader({ filename, mode, modes, onMode, showNumber
       </div>
       <div className="title-file">{filename}</div>
       <div className="title-controls">
+        <label className="ctl">
+          font
+          <select value={fontId} onChange={(e) => onFontId(e.target.value as FontId)}>
+            {FONTS.map((f) => <option key={f.id} value={f.id}>{f.label}</option>)}
+          </select>
+        </label>
         <label className="ctl">
           highlight
           <select value={mode} onChange={(e) => onMode(e.target.value as Mode)}>

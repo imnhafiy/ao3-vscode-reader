@@ -8,6 +8,7 @@ import EditorTabs from './EditorTabs';
 import Reader from './Reader';
 import Sidebar from './Sidebar';
 import StatusBar from './StatusBar';
+import { FONTS, type FontId } from '../services/fonts';
 
 const MAX_COLS = 90; // widest a row gets, in characters. Lower = narrower column.
 
@@ -19,6 +20,8 @@ export default function Editor({ fic, onClose }: { fic: Fic; onClose: () => void
   const [showNumbers, setShowNumbers] = useState(true);
   const [explorerOpen, setExplorerOpen] = useState(true);
   const [fontSize, setFontSize] = useState(17);
+  const [fontId, setFontId] = useState<FontId>('inter');
+  const fontStack = FONTS.find((f) => f.id === fontId)!.stack;  
   const [activeLine, setActiveLine] = useState(1);
   const [progress, setProgress] = useState(0);
 
@@ -75,6 +78,8 @@ export default function Editor({ fic, onClose }: { fic: Fic; onClose: () => void
         mode={mode}
         modes={MODES}
         onMode={setMode}
+        fontId={fontId}
+        onFontId={setFontId}
         showNumbers={showNumbers}
         onToggleNumbers={() => setShowNumbers((v) => !v)}
         onFont={(d) => setFontSize((s) => Math.min(28, Math.max(12, s + d)))}
@@ -100,6 +105,7 @@ export default function Editor({ fic, onClose }: { fic: Fic; onClose: () => void
             lines={rows}
             showNumbers={showNumbers}
             fontSize={fontSize}
+            fontFamily={fontStack}
             activeLine={activeLine}
             onActive={setActiveLine}
             onProgress={setProgress}

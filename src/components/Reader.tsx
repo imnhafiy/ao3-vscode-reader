@@ -6,13 +6,14 @@ type Props = {
   lines: Line[];
   showNumbers: boolean;
   fontSize: number;
+  fontFamily: string;
   activeLine: number;
   onActive: (n: number) => void;
   onProgress: (pct: number) => void;
   scrollRef: RefObject<HTMLDivElement>;
 };
 
-export default function Reader({ lines, showNumbers, fontSize, activeLine, onActive, onProgress, scrollRef }: Props) {
+export default function Reader({ lines, showNumbers, fontSize, fontFamily, activeLine, onActive, onProgress, scrollRef }: Props) {
   const onScroll = () => {
     const el = scrollRef.current;
     if (!el) return;
@@ -23,7 +24,8 @@ export default function Reader({ lines, showNumbers, fontSize, activeLine, onAct
   };
 
   // --lh is the height of one row; the line numbers and the text both use it so they stay aligned.
-  const style = { fontSize, '--lh': `${(fontSize * 1.5).toFixed(1)}px` } as CSSProperties;
+const style = { fontSize, '--lh': `${(fontSize * 1.6).toFixed(1)}px`, '--prose': fontFamily,
+} as CSSProperties;
 
   return (
     <div className="reader" ref={scrollRef} onScroll={onScroll} style={style}>
